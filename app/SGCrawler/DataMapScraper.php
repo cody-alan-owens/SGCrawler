@@ -1,17 +1,16 @@
 <?php namespace SGCrawler;
 
-use Goutte\Client as GoutteCrawler;
+use Goutte\Client as GoutteClient;
 
-class Crawler
+class DataMapWebScraper
 {
-    public $results = null;
-    public function __construct($url, DataMap $dataMap){
-        $this->results = $this->FillDataMap($url, clone $dataMap);
+    GoutteCrawler $client;
+    public function __construct(){
+        $this->client = new GoutteClient();
     }
 
-    public function FillDataMap($url, DataMap $dataMap){
-        $client = new GoutteCrawler();
-        $crawler = $client->request('GET', $url, ['verify' => false]);
+    public function FillDataMap($url, DataMap &$dataMap){
+        $crawler = $this->client->request('GET', $url, ['verify' => false]);
         foreach($dataMap->scrapeFields as &$field){
             $node = $crawler->filterXPath($field->xpath);
             if(is_array($field->match)){
@@ -29,6 +28,5 @@ class Crawler
                 } 
             }
         }
-        return $dataMap;
     }
 }
