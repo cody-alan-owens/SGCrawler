@@ -4,9 +4,9 @@ use mysqli;
 
 class MySQLController
 {
-    private $mysqli = null;
+    private $link;
     public function __construct($server, $username, $password, $db){
-        $this->mysqli = new mysqli($server, $username, $password, $db);
+        $this->link = mysqli_connect($server, $username, $password, $db);
     }
 
     public function GetSchema($table){
@@ -22,10 +22,9 @@ class MySQLController
     public function ReturnQueryResults($sql){
 
         echo "SQL: ".$sql;
-        if ($result = $this->mysqli->query($sql)) {
+        if ($result = mysqli_query($this->link, $sql)) {
             
         }
-        $this->mysqli->close();
     }
 
     public function SaveToMySQL(array $dataMap, $tablename, $category=""){
@@ -34,14 +33,14 @@ class MySQLController
             $sql=$sql."category, ";
         }
         foreach($dataMap as $row){
-            $sql = $sql.$this->mysqli->real_escape_string($row->name).",";
+            $sql = $sql.mysqli_real_escape_string($this->link, $row->name).",";
         }
         $sql = substr($sql,0,-1).") VALUES (";
         if(strlen($category)>0){
             $sql=$sql."'".$category."', ";
         }
         foreach($dataMap as $row){
-            $sql = $sql."'".$this->mysqli->real_escape_string($row->match)."',";
+            $sql = $sql."'".mysqli_real_escape_string($this->link, $row->match)."',";
             $sql = substr($sql,0,-1);
             $sql = $sql.",";
         }

@@ -2,16 +2,16 @@
 
 use Goutte\Client as GoutteClient;
 
-class DataMapWebScraper
+class DataMapScraper
 {
-    GoutteCrawler $client;
+    public $client;
     public function __construct(){
         $this->client = new GoutteClient();
     }
 
-    public function FillDataMap($url, DataMap &$dataMap){
+    public function FillDataMap($url, DataMap $dataMap){
         $crawler = $this->client->request('GET', $url, ['verify' => false]);
-        foreach($dataMap->scrapeFields as &$field){
+        foreach($dataMap->scrapeFields as $field){
             $node = $crawler->filterXPath($field->xpath);
             if(is_array($field->match)){
                 $allMatches = $node->extract(array('_text'));
