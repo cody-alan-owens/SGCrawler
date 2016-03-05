@@ -13,8 +13,8 @@
         }
     ],
     "autoload": {
-        "psr-4": {
-            "SGCrawler\\": "app/SGCrawler"
-        }
+        "classmap":[
+            "app/SGCrawler/"
+        ]        
     }
 }

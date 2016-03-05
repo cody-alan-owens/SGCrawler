@@ -13,4 +13,8 @@ class Config
     function __construct($timeout = 960){
         set_time_limit($timeout);
     }
+    
+    public function hasSettings(){
+        return true;
+    }
 }
